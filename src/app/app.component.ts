@@ -31,9 +31,9 @@ export class AppComponent implements OnInit{
     this.formPerson = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
       apellido: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      correo: ['', [Validators.required, Validators.email]],
-      edad: ['', [Validators.required, Validators.min(0), Validators.max(120)]],
-      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9,10}$/)]],
+      correo: ['', [Validators.required]],
+      edad: ['', [Validators.required, Validators.min(0)]],
+      telefono: ['', [Validators.required]],
   });
   
   }
