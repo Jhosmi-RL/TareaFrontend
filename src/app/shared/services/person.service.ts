@@ -12,16 +12,16 @@ export class PersonService {
   constructor(private http: HttpClient) { }
   list(): Observable<Person[]> {
     return this.http.get<Person[]>(
-      `${environment.backendBaseUrl}/api/person`);
+      `${environment.backendBaseUrl}/api/producto`);
   }
 
   remove(personId: number): Observable<any> {
     return this.http.delete<any>(
-      `${environment.backendBaseUrl}/api/person/${personId}`);
+      `${environment.backendBaseUrl}/api/producto/${personId}`);
   }
 
   create(body: PersonBody): Observable<Person> {
-    const url = `${environment.backendBaseUrl}/api/person`;
+    const url = `${environment.backendBaseUrl}/api/producto`;
     return this.http.post<Person>(url, body);
   }
 }
