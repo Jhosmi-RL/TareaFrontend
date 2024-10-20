@@ -1,8 +1,8 @@
 <h3 class="header">
     Lista de Personas
-    <!-- <button class="addBtn" (click)="addPerson()">Agregar Producto</button> -->
+     <button class="addBtn" (click)="addPerson()">Agregar Producto</button> 
   </h3>
-  <!-- <div class="form-container" *ngIf="showFormPerson !== 'none'">
+    <div class="form-container" *ngIf="showFormPerson !== 'none'">
     <section class="form-section">
         <h4>Agregar Producto</h4>
           <form [formGroup]="formPerson" (submit)="createPerson()">
@@ -90,7 +90,7 @@
         </form>
     </section>
   </div>
-   -->
+   
   <div class="table-container">
     <ng-container [ngSwitch]="cargaDatos">
         <ng-container *ngSwitchCase="'loading'">
