@@ -1,0 +1,140 @@
+<h3 class="header">
+  Administración de Personas
+  <button class="addBtn" (click)="addPerson()">Agregar Persona</button>
+</h3>
+<div class="form-container" *ngIf="showFormPerson !== 'none'">
+  <section class="form-section">
+      <h4>Agregar Categoría</h4>
+        <form [formGroup]="formPerson" (submit)="createPerson()">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" formControlName="nombre" class="form-input" />
+            <div class="error" *ngIf="!formPerson.pristine && formPerson.controls['nombre'].errors">
+                <ng-container *ngIf="formPerson.controls['nombre'].errors['required']">
+                    <span>Este campo es requerido</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['nombre'].errors['minlength']">
+                    <span>La cantidad mínima de letras es {{formPerson.controls['nombre'].errors['minlength']['requiredLength']}}
+                    (actualmente tiene: {{formPerson.controls['nombre'].errors['minlength']['actualLength']}} caracteres)</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['nombre'].errors['maxlength']">
+                    <span>La cantidad máxima de letras es {{formPerson.controls['nombre'].errors['maxlength']['requiredLength']}}
+                    (actualmente tiene: {{formPerson.controls['nombre'].errors['maxlength']['actualLength']}} caracteres)</span>
+                </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" formControlName="apellido" class="form-input" />
+            <div class="error" *ngIf="!formPerson.pristine && formPerson.controls['apellido'].errors">
+                <ng-container *ngIf="formPerson.controls['apellido'].errors['required']">
+                    <span>Este campo es requerido</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['apellido'].errors['minlength']">
+                    <span>La cantidad mínima de letras es {{formPerson.controls['apellido'].errors['minlength']['requiredLength']}}
+                    (actualmente tiene: {{formPerson.controls['apellido'].errors['minlength']['actualLength']}} caracteres)</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['apellido'].errors['maxlength']">
+                    <span>La cantidad máxima de letras es {{formPerson.controls['apellido'].errors['maxlength']['requiredLength']}}
+                    (actualmente tiene: {{formPerson.controls['apellido'].errors['maxlength']['actualLength']}} caracteres)</span>
+                </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="correo">Correo Electrónico</label>
+            <input type="email" formControlName="correo" class="form-input" />
+            <div class="error" *ngIf="!formPerson.pristine && formPerson.controls['correo'].errors">
+                <ng-container *ngIf="formPerson.controls['correo'].errors['required']">
+                    <span>Este campo es requerido</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['correo'].errors['email']">
+                    <span>El formato del correo no es válido</span>
+                </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edad">Edad</label>
+            <input type="number" formControlName="edad" class="form-input" />
+            <div class="error" *ngIf="!formPerson.pristine && formPerson.controls['edad'].errors">
+                <ng-container *ngIf="formPerson.controls['edad'].errors['required']">
+                    <span>Este campo es requerido</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['edad'].errors['min']">
+                    <span>La edad debe ser al menos {{formPerson.controls['edad'].errors['min'].min}}</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['edad'].errors['max']">
+                    <span>La edad no puede ser mayor a {{formPerson.controls['edad'].errors['max'].max}}</span>
+                </ng-container>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" formControlName="telefono" class="form-input" />
+            <div class="error" *ngIf="!formPerson.pristine && formPerson.controls['telefono'].errors">
+                <ng-container *ngIf="formPerson.controls['telefono'].errors['required']">
+                    <span>Este campo es requerido</span>
+                </ng-container>
+                <ng-container *ngIf="formPerson.controls['telefono'].errors['pattern']">
+                    <span>El número de teléfono debe contener entre 9 y 10 dígitos y solo números.</span>
+                </ng-container>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" (click)="showFormPerson = 'none'" class="cancelBtn">Cancelar</button>
+            <button type="submit" [disabled]="!formPerson.valid" class="submitBtn">Agregar</button>
+        </div>
+      </form>
+  </section>
+</div>
+
+<div class="table-container">
+  <ng-container [ngSwitch]="cargaDatos">
+      <ng-container *ngSwitchCase="'loading'">
+          <p>Cargando... Por favor, espere.</p>
+      </ng-container>
+      <ng-container *ngSwitchCase="'done'">
+          <table class="data-table">
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Correo</th>
+                      <th>Edad</th>
+                      <th>Telefono</th>
+                      <th>Acciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let person of persons;">
+                      <td>{{person.id}}</td>
+                      <td>{{person.nombre}}</td>
+                      <td>{{person.apellido}}</td>
+                      <td>{{person.correo}}</td>
+                      <td>{{person.edad}}</td>
+                      <td>{{person.telefono}}</td>
+                      <td>
+                          <ng-container *ngIf="person.remove; else normalActions">
+                              <span>¿Está seguro de eliminar esta categoría?</span>
+                              <div>
+                                  <button class="confirmBtn" (click)="confirmDelete(person.id)">Sí</button>
+                                  <button class="cancelBtn" (click)="cancelDelete(person)">No</button>
+                              </div>
+                          </ng-container>
+                          <ng-template #normalActions>
+                              <button class="remBtn" (click)="removePerson(person)">Eliminar</button>
+                          </ng-template>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </ng-container>
+      <ng-container *ngSwitchCase="'error'">
+          <p>Lo sentimos, tuvimos un error. Por favor, inténtelo más tarde.</p>
+      </ng-container>
+  </ng-container>
+</div>
